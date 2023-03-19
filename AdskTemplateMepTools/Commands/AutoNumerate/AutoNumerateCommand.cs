@@ -20,16 +20,16 @@ namespace AdskTemplateMepTools.Commands.AutoNumerate
                 {
                     Id = "ID_TaskDialog_Auto-numbering",
                     MainIcon = TaskDialogIcon.TaskDialogIconInformation,
-                    Title = "Автонумерация позиции",
+                    Title = "自动编号",
                     TitleAutoPrefix = false,
                     AllowCancellation = true,
                     MainInstruction =
-                        "Для автонумерации позиции могут использоваться номер строки или индекс вложенных семейств",
-                    MainContent = "Выберите способ автонумерации:"
+                        "对于位置自动编号，可以使用嵌套族的行号或索引",
+                    MainContent = "选择自动编号方法："
                 };
 
-                td.AddCommandLink(TaskDialogCommandLinkId.CommandLink1, "По строке элемента в спецификации");
-                td.AddCommandLink(TaskDialogCommandLinkId.CommandLink2, "По вложенным семействам");
+                td.AddCommandLink(TaskDialogCommandLinkId.CommandLink1, "按规范中的元素行");
+                td.AddCommandLink(TaskDialogCommandLinkId.CommandLink2, "按嵌套族");
                 var tdRes = td.Show();
                 var sub = tdRes switch
                 {
@@ -44,7 +44,7 @@ namespace AdskTemplateMepTools.Commands.AutoNumerate
                 if (tableSectionData.NumberOfRows <= 0) return Result.Failed;
                 var startIndex = 1; //Стартовый значение для номера
 
-                using var tGroup = new TransactionGroup(doc, "Автонумерация спецификации: " + locVs.Name);
+                using var tGroup = new TransactionGroup(doc, "规范自动编号：" + locVs.Name);
                 tGroup.Start();
                 for (var rInd = 0; rInd < tableSectionData.NumberOfRows; rInd++)
                 {
@@ -60,7 +60,7 @@ namespace AdskTemplateMepTools.Commands.AutoNumerate
             }
             else
             {
-                TaskDialog.Show("Предупреждение", "Для автонумерации требуется открыть спецификацию!");
+                TaskDialog.Show("警告", "自动编号需要开规范！");
             }
 
             return Result.Succeeded;
@@ -72,7 +72,7 @@ namespace AdskTemplateMepTools.Commands.AutoNumerate
             var system = false;
             var upped = false;
             var pos = num;
-            using var tr = new Transaction(doc, "Задание номера позиции элементам");
+            using var tr = new Transaction(doc, "为元素设置位置编号");
             tr.Start();
             if (!sub)
             {
